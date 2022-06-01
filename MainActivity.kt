@@ -1,5 +1,7 @@
+//importation du package
 package buffml.com.smartdoctor
 
+//importation des classes 
 import android.os.Bundle
 import android.widget.Toast
 import android.app.Activity
@@ -16,13 +18,14 @@ import android.view.Gravity
 import kotlinx.android.synthetic.main.activity_main.*;
 import java.io.IOException
 
+//Début de la classe MainActivity
 class MainActivity : AppCompatActivity() {
     private lateinit var mClassifier: Classifier
     private lateinit var mBitmap: Bitmap
-
+    //déclaration et initialisation des variables
     private val mCameraRequestCode = 0
     private val mGalleryRequestCode = 2
-
+      
     private val mInputSize = 224
     private val mModelPath = "model.tflite"
     private val mLabelPath = "labels.txt"
@@ -41,17 +44,18 @@ class MainActivity : AppCompatActivity() {
             mBitmap = Bitmap.createScaledBitmap(mBitmap, mInputSize, mInputSize, true)
             mPhotoImageView.setImageBitmap(mBitmap)
         }
-
+        //bouton camera
         mCameraButton.setOnClickListener {
             val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(callCameraIntent, mCameraRequestCode)
         }
-
+        //bouton gallerie
         mGalleryButton.setOnClickListener {
             val callGalleryIntent = Intent(Intent.ACTION_PICK)
             callGalleryIntent.type = "image/*"
             startActivityForResult(callGalleryIntent, mGalleryRequestCode)
         }
+        //détectiondes boutons
         mDetectButton.setOnClickListener {
                 val results = mClassifier.recognizeImage(mBitmap).firstOrNull()
                 mResultTextView.text= results?.title+"\n Confidence:"+results?.confidence
